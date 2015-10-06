@@ -4,17 +4,38 @@
  */
 package FootballTeamManagement;
 
+import java.awt.HeadlessException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author jayakrishnan
  */
 public class AddTeam extends javax.swing.JFrame {
 
+ Connection conn;
+  Statement st; 
     /**
      * Creates new form AddTeam
      */
     public AddTeam() {
-        initComponents();
+        initComponents();  try{
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+             conn=DriverManager.getConnection(
+					"jdbc:oracle:thin:@localhost:1521:orcl", "scott",
+					"password");
+             st=conn.createStatement();
+   
+        }
+        catch(Exception e)
+        {
+             System.out.println(e);
+        }
     }
 
     /**
@@ -61,7 +82,7 @@ public class AddTeam extends javax.swing.JFrame {
         Teamnbu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         Teamnbu.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         Teamnbu.setToolTipText("");
-        Teamnbu.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), "Team budget", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 12), java.awt.Color.black)); // NOI18N
+        Teamnbu.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)), "Team budget( in millon)", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 12), java.awt.Color.black)); // NOI18N
         Teamnbu.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         Teamnbu.setSelectionColor(new java.awt.Color(255, 51, 51));
         Teamnbu.addActionListener(new java.awt.event.ActionListener() {
@@ -80,6 +101,11 @@ public class AddTeam extends javax.swing.JFrame {
         jButton1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), new java.awt.Color(204, 204, 204)));
         jButton1.setContentAreaFilled(false);
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,6 +177,11 @@ public class AddTeam extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_TeamnbuKeyPressed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+            Submit();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -187,11 +218,83 @@ public class AddTeam extends javax.swing.JFrame {
     }
     public void Submit(){
         
-        String U=Teamname.getText();
-        String P = Teamnbu.getText();
-        System.out.println(U+P);
+        String N=Teamname.getText();
+        String B = Teamnbu.getText();
+        if(N.length()==0){
+            JOptionPane.showMessageDialog(this, "Specify Team Name");
+            Teamname.requestFocus();
+        }
+        else if(!N.matches("^[a-zA-Z0-9_\\s]*$")){
+            JOptionPane.showMessageDialog(this, "Team Name Should contain Alphabets ,numbers and white spaces only ");
+            Teamname.requestFocus();
+       }
+        else if(B.length()==0){
+            JOptionPane.showMessageDialog(this,"Specify Team Base Budget");
+            Teamnbu.requestFocus();
+        }
+        else if( (!checkIfNumber(B)) || (Long.parseLong(B)<=0.99)){
+            JOptionPane.showMessageDialog(this,"Budget Mustbe a number and \n minimum amount is 1 million ");
+            Teamnbu.requestFocus();
+        }
+        else { 
+            int count=1;
+            int countTeam=0;
+            try{
+                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team");
+                r.next();
+                count= r.getInt(1)+1;
+                r.close(); 
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+            try{
+                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
+                r.next();
+                countTeam= r.getInt(1);
+                r.close(); 
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+            if(countTeam!=0){
+                JOptionPane.showMessageDialog(this,"Team Name Already exist");
+                Teamname.requestFocus();
+            }
+            else{
+try{
+            st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
+                "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
+             
+            JOptionPane.showMessageDialog(this,"Team Added ");
+            this.dispose();
+            }
+            catch(SQLException | HeadlessException e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+        }
+        }
+        System.out.println(N);
+        System.out.println(B);
         
         
+    }
+    
+    
+     public boolean checkIfNumber(String in) {
+        
+        try {
+ 
+            Long.parseLong(in);
+        
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+        
+        return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Teamname;
@@ -200,4 +303,6 @@ public class AddTeam extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    
 }
