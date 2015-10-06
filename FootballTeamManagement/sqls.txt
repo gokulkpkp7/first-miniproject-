@@ -1,0 +1,10 @@
+username :scott
+password:password
+
+
+create table player(
+playerid number(20) primary key,
+playername varchar(20) unique,
+playerteam number(10),
+playerrating number(5)
+);
