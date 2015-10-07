@@ -299,10 +299,11 @@ public class AddPlayer extends javax.swing.JFrame {
                 System.out.println(B);
 
 try{
-            db.st.executeUpdate("INSERT INTO player(PLAYERID,PLAYERNAME,PLAYERTEAM,PLAYERRATING) " + 
-                "VALUES ('"+count+"','"+N+"', '"+R+"',"+B+")");
-             
-            JOptionPane.showMessageDialog(this,"Team Added ");
+    String sql=" INSERT INTO player(PLAYERID,PLAYERNAME,PLAYERTEAM,PLAYERRATING)   VALUES ('"+count+"','"+N+"', '"+R+"',"+B+")";
+           
+    db.st.executeUpdate(sql);
+            System.out.println("player Added ");
+            JOptionPane.showMessageDialog(this,"player Added ");
             this.dispose();
             }
             catch(SQLException | HeadlessException e){
