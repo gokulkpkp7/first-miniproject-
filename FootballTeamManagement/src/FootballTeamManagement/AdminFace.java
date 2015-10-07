@@ -233,6 +233,19 @@ public class AdminFace extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+      String sql="SELECT  * FROM player";
+       dbhandler db =new dbhandler();
+         try{
+            int i=0;
+        ResultSet r = db.st.executeQuery(sql); 
+        jScrollPane1.setVisible(true);
+        TB1.setModel(DbUtils.resultSetToTableModel(r));
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        }
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

@@ -190,13 +190,15 @@ public class AddPlayer extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void PlayerteamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerteamActionPerformed
-        Submit();
+       
      // TODO add your handling code here:
     }//GEN-LAST:event_PlayerteamActionPerformed
 
     private void PlayerteamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PlayerteamKeyPressed
         // TODO add your handling code here:
+       if(evt.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER){
         Submit();
+       }
     }//GEN-LAST:event_PlayerteamKeyPressed
 
     /**
@@ -264,10 +266,10 @@ public class AddPlayer extends javax.swing.JFrame {
         }
         else { 
             int count=1;
-            int countTeam=0;
+            int countPlayer=0;
             dbhandler db=new dbhandler();
             try{
-                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM player");
                 r.next();
                 count= r.getInt(1)+1;
                 r.close(); 
@@ -277,23 +279,28 @@ public class AddPlayer extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
             try{
-                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM player where playername='"+N+"'");
                 r.next();
-                countTeam= r.getInt(1);
+                countPlayer= r.getInt(1);
                 r.close(); 
             }
             catch(Exception e){
                 System.out.println(e);
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
-            if(countTeam!=0){
-                JOptionPane.showMessageDialog(this,"Team Name Already exist");
+            if(countPlayer!=0){
+                JOptionPane.showMessageDialog(this," Name Already exist");
                 Playername.requestFocus();
             }
-            else{
+            else{        
+                System.out.println(count);
+                System.out.println(N);
+                System.out.println(R);
+                System.out.println(B);
+
 try{
-            db.st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
-                "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
+            db.st.executeUpdate("INSERT INTO player(PLAYERID,PLAYERNAME,PLAYERTEAM,PLAYERRATING) " + 
+                "VALUES ('"+count+"','"+N+"', '"+R+"',"+B+")");
              
             JOptionPane.showMessageDialog(this,"Team Added ");
             this.dispose();
@@ -304,8 +311,6 @@ try{
             }
         }
         }
-        System.out.println(N);
-        System.out.println(B);
         
         
     }
