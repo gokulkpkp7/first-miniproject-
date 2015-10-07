@@ -3,11 +3,8 @@
  * and open the template in the editor.
  */
 package FootballTeamManagement;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+ 
+import java.sql.ResultSet; 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -17,8 +14,6 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
 
- Connection conn;
-  Statement st; 
     /**
      * Creates new form Login
      */
@@ -26,19 +21,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Log In ");
         this.setIconImage(new ImageIcon(getClass().getResource("logo.jpg")).getImage());
-   
-         try{
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-             conn=DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:orcl", "scott",
-					"password");
-             st=conn.createStatement();
-   
-        }
-        catch(Exception e)
-        {
-             System.out.println(e);
-        }
+        
+        
     }
 
     /**
@@ -245,8 +229,9 @@ public class Login extends javax.swing.JFrame {
         String U=Username.getText();
         String P = Password.getText();
         int count=0;
+        dbhandler db=new dbhandler();
            try{
-                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM login where username='"+U+"'and password='" +P+"'");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM login where username='"+U+"'and password='" +P+"'");
                 r.next();
                 count= r.getInt(1);
                 r.close(); 
@@ -261,7 +246,7 @@ public class Login extends javax.swing.JFrame {
         if(count==1){ 
         this.dispose();
              try{
-              ResultSet r = st.executeQuery("SELECT isadmin FROM login where username='"+U+"'and password='" +P+"'");
+              ResultSet r = db.st.executeQuery("SELECT isadmin FROM login where username='"+U+"'and password='" +P+"'");
                 r.next();
                     if(r.getInt(1)==1){
                     AdminFace a = new AdminFace();
