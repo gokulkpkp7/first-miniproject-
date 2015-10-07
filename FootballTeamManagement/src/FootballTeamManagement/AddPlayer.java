@@ -37,6 +37,7 @@ public class AddPlayer extends javax.swing.JFrame {
         Playerrating = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Playerteam = new javax.swing.JTextField();
+        Repeatall = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add Player");
@@ -111,6 +112,14 @@ public class AddPlayer extends javax.swing.JFrame {
             }
         });
 
+        Repeatall.setBackground(new java.awt.Color(255, 255, 255));
+        Repeatall.setText(" Repeat");
+        Repeatall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RepeatallActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -120,6 +129,8 @@ public class AddPlayer extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(73, 73, 73)
+                        .addComponent(Repeatall)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +152,9 @@ public class AddPlayer extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(Playerrating, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Repeatall))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -201,6 +214,12 @@ public class AddPlayer extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_PlayerteamKeyPressed
 
+    private void RepeatallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepeatallActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_RepeatallActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -250,14 +269,14 @@ public class AddPlayer extends javax.swing.JFrame {
        }
         else if(R.length()==0){
             JOptionPane.showMessageDialog(this, "Specify Team Name");
-            Playername.requestFocus();
+            Playerteam.requestFocus();
         }
         else if(!R.matches("^[a-zA-Z0-9_\\s]*$")){
             JOptionPane.showMessageDialog(this, "Team Name Should contain Alphabets ,numbers and white spaces only ");
-            Playername.requestFocus();
+            Playerteam.requestFocus();
        }
         else if(B.length()==0){
-            JOptionPane.showMessageDialog(this,"Specify Player ratinf ");
+            JOptionPane.showMessageDialog(this,"Specify Player rating ");
             Playerrating.requestFocus();
         }
         else if( (!checkIfNumber(B)) || (Long.parseLong(B)<=0.99) ||(Long.parseLong(B)>=10.1) ){
@@ -304,7 +323,13 @@ try{
     db.st.executeUpdate(sql);
             System.out.println("player Added ");
             JOptionPane.showMessageDialog(this,"player Added ");
-            this.dispose();
+          if(Repeatall.isSelected()) { 
+              AddPlayer A=new AddPlayer(); 
+              A.setVisible(true);
+              A.Repeatall.setSelected(true);
+              
+          } 
+          this.dispose();
             }
             catch(SQLException | HeadlessException e){
                 System.out.println(e);
@@ -333,6 +358,7 @@ try{
     private javax.swing.JTextField Playername;
     private javax.swing.JTextField Playerrating;
     private javax.swing.JTextField Playerteam;
+    private javax.swing.JCheckBox Repeatall;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -37,6 +37,7 @@ public class AddTeam extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         Teamnbu = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        Repeatall = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -92,6 +93,14 @@ public class AddTeam extends javax.swing.JFrame {
             }
         });
 
+        Repeatall.setBackground(new java.awt.Color(255, 255, 255));
+        Repeatall.setText(" Repeat");
+        Repeatall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RepeatallActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -101,6 +110,8 @@ public class AddTeam extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86)
+                        .addComponent(Repeatall)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,7 +130,9 @@ public class AddTeam extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(Teamnbu, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Repeatall))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -166,6 +179,11 @@ public class AddTeam extends javax.swing.JFrame {
         // TODO add your handling code here:
             Submit();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void RepeatallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepeatallActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_RepeatallActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,6 +273,12 @@ try{
                 "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
              
             JOptionPane.showMessageDialog(this,"Team Added ");
+            if(Repeatall.isSelected()) { 
+              AddTeam A=new AddTeam(); 
+              A.setVisible(true);
+              A.Repeatall.setSelected(true);
+              
+          } 
             this.dispose();
             }
             catch(SQLException | HeadlessException e){
@@ -283,6 +307,7 @@ try{
         return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox Repeatall;
     private javax.swing.JTextField Teamname;
     private javax.swing.JTextField Teamnbu;
     private javax.swing.JButton jButton1;

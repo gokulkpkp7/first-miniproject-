@@ -8,3 +8,10 @@ playername varchar(20) unique,
 playerteam varchar(10),
 playerrating number(11,5)
 );
+
+create table sponsor(
+sponsorid number(20) primary key,
+sponsorname varchar(20) unique,
+sponsorteam varchar(10),
+amounts number(38,5)
+);
