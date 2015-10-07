@@ -4,12 +4,9 @@
  */
 package FootballTeamManagement;
 
-import java.awt.HeadlessException;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.awt.HeadlessException; 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.SQLException; 
 import javax.swing.JOptionPane;
 
 /**
@@ -17,25 +14,13 @@ import javax.swing.JOptionPane;
  * @author jayakrishnan
  */
 public class AddTeam extends javax.swing.JFrame {
-
- Connection conn;
-  Statement st; 
+ 
     /**
      * Creates new form AddTeam
      */
     public AddTeam() {
-        initComponents();  try{
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-             conn=DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:orcl", "scott",
-					"password");
-             st=conn.createStatement();
-   
-        }
-        catch(Exception e)
-        {
-             System.out.println(e);
-        }
+        initComponents();   
+        
     }
 
     /**
@@ -239,8 +224,9 @@ public class AddTeam extends javax.swing.JFrame {
         else { 
             int count=1;
             int countTeam=0;
+            dbhandler db=new dbhandler();
             try{
-                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team");
                 r.next();
                 count= r.getInt(1)+1;
                 r.close(); 
@@ -250,7 +236,7 @@ public class AddTeam extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
             try{
-                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
                 r.next();
                 countTeam= r.getInt(1);
                 r.close(); 
@@ -265,7 +251,7 @@ public class AddTeam extends javax.swing.JFrame {
             }
             else{
 try{
-            st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
+            db.st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
                 "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
              
             JOptionPane.showMessageDialog(this,"Team Added ");
