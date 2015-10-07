@@ -13,5 +13,5 @@ create table sponsor(
 sponsorid number(20) primary key,
 sponsorname varchar(20) unique,
 sponsorteam varchar(10),
-amounts number(38,5)
+amount number(38,5)
 );
