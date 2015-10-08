@@ -295,7 +295,7 @@ public class AdminFace extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminFace().setVisible(true);
+                new AdminFace().setVisible(true); 
             }
         });
     }
