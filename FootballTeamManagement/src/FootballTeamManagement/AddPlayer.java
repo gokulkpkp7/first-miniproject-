@@ -364,8 +364,7 @@ public class AddPlayer extends javax.swing.JFrame {
             }
             
             try{
-            System.out.println("SELECT COUNT(*) FROM team where teamname='"+R+"'");
-                ResultSet r2 = db.st.executeQuery("SELECT COUNT(*) FROM team where teamname='"+R+"'");
+                  ResultSet r2 = db.st.executeQuery("SELECT COUNT(*) FROM team where teamname='"+R+"'");
                 r2.next();
                 Teamnamecount= r2.getInt(1);
                 r2.close(); 
@@ -401,6 +400,22 @@ try{
             + "   VALUES ('"+count+"','"+N+"', '"+R+"',"+Rating+","+Ag+")";
            
     db.st.executeUpdate(sql);
+    int TP=0;
+      try{
+                  ResultSet r3 = db.st.executeQuery("SELECT TOTALPLAYERS FROM team where teamname='"+R+"'");
+                r3.next();
+                Teamnamecount= r3.getInt(1);
+                r3.close(); 
+                
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured cant select toatlplayers \n\t["+e+"]");
+            }
+      TP=Teamnamecount+1;
+    String sql2=" UPDATE team set TOTALPLAYERS="+TP+" where TEAMNAME='"+R+"' ";       
+    db.st.executeUpdate(sql2);
+    
             System.out.println("player Added ");
             JOptionPane.showMessageDialog(this,"player Added ");
           if(Repeatall.isSelected()) { 
