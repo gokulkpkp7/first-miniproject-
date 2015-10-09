@@ -246,7 +246,7 @@ public class Login extends javax.swing.JFrame {
                     a.setVisible(true);
                     }
                     else {
-                    UserFace u = new UserFace();
+                    UserFace u = new UserFace(U);
                     u.setVisible(true);
                     }      
 }catch(Exception e)
