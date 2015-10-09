@@ -4,7 +4,7 @@
  */
 package FootballTeamManagement;
  
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
