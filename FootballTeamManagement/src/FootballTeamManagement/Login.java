@@ -4,7 +4,7 @@
  */
 package FootballTeamManagement;
  
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -21,7 +21,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Log In ");
         this.setIconImage(new ImageIcon(getClass().getResource("logo.jpg")).getImage());
-        
+        System.out.println("this is for AjayKrishnan");
+        System.out.println("this is for AjayKrishnan 2");
         
     }
 
@@ -213,19 +214,12 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try{
-                    Thread.sleep(8000);
-                }
-                catch(Exception e)
-                {
-                    System.out.println(e);
-                }
-                new Login().setVisible(true);
+                        
             }
         });
     }
     
-    public void login(){
+   public void login(){
         String U=Username.getText();
         String P = Password.getText();
         int count=0;
@@ -253,7 +247,7 @@ public class Login extends javax.swing.JFrame {
                     a.setVisible(true);
                     }
                     else {
-                    UserFace u = new UserFace();
+                    UserFace u = new UserFace(U);
                     u.setVisible(true);
                     }      
 }catch(Exception e)
