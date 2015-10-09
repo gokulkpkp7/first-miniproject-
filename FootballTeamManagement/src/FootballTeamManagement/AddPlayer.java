@@ -247,6 +247,9 @@ public class AddPlayer extends javax.swing.JFrame {
 
     private void AgeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AgeKeyPressed
         // TODO add your handling code here:
+        if(evt.getKeyCode()==java.awt.event.KeyEvent.VK_ENTER){
+            Submit();
+        }
     }//GEN-LAST:event_AgeKeyPressed
 
     /**
@@ -323,6 +326,7 @@ public class AddPlayer extends javax.swing.JFrame {
         }
         else { 
             int count=1;
+            int Teamnamecount=0;
             int countPlayer=0;
             dbhandler db=new dbhandler();
             try{
@@ -345,9 +349,32 @@ public class AddPlayer extends javax.swing.JFrame {
                 System.out.println(e);
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
-            if(countPlayer!=0){
+            
+            try{
+            System.out.println("SELECT COUNT(*) FROM team where teamname='"+R+"'");
+                ResultSet r2 = db.st.executeQuery("SELECT COUNT(*) FROM team where teamname='"+R+"'");
+                r2.next();
+                Teamnamecount= r2.getInt(1);
+                r2.close(); 
+                
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+ 
+            System.out.println("Teamnamecount="+Teamnamecount);
+            System.out.println("name="+R);
+            
+            
+            if(countPlayer!=0 ){
                 JOptionPane.showMessageDialog(this," Name Already exist");
                 Playername.requestFocus();
+             }
+            else if(Teamnamecount==0 ){
+                JOptionPane.showMessageDialog(this," Team Donot exist");
+                Playername.requestFocus();
+           System.out.println("::"+Teamnamecount);
             }
             else{        
                 System.out.println(count);

@@ -268,9 +268,33 @@ public class AddTeam extends javax.swing.JFrame {
                 Teamname.requestFocus();
             }
             else{
+                
+                
+                
+                
+                
+                            try{
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM login where USERNAME='"+N+"'");
+                r.next();
+                countTeam= r.getInt(1);
+                r.close(); 
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+            if(countTeam!=0){
+                JOptionPane.showMessageDialog(this,"Team Name Already exist in Login");
+                Teamname.requestFocus();
+            }
+            else{
+                
+                
 try{
             db.st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
                 "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
+            db.st.executeUpdate("INSERT INTO login(USERNAME,PASSWORD,ISADMIN) " + 
+                "VALUES ('"+N+"','"+N+"',0)");
              
             JOptionPane.showMessageDialog(this,"Team Added ");
             if(Repeatall.isSelected()) { 
@@ -285,6 +309,7 @@ try{
                 System.out.println(e);
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
+        }
         }
         }
         System.out.println(N);

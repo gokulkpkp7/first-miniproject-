@@ -295,6 +295,19 @@ public class AddSponsor extends javax.swing.JFrame {
                 System.out.println(e);
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
+    long Currentbudget=0;
+    long Budget=0;
+            try{
+                ResultSet r = db.st.executeQuery("SELECT currentbudget FROM team where teamname='"+T+"'");
+                r.next();
+                Currentbudget= r.getInt(1);
+                r.close(); 
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+    Budget=Currentbudget+Long.parseLong(A);
             if(countsponsor!=0){
                 JOptionPane.showMessageDialog(this," Name Already exist");
                 Sponsorname.requestFocus();
@@ -302,9 +315,13 @@ public class AddSponsor extends javax.swing.JFrame {
             else{   
 
 try{
-    String sql=" INSERT INTO sponsor(sponsorid,sponsorname,sponsorteam,amount)   VALUES ("+count+",'"+N+"', '"+T+"',"+A+")";
+    
+    
+    String sql1=" INSERT INTO sponsor(sponsorid,sponsorname,sponsorteam,amount)   VALUES ("+count+",'"+N+"', '"+T+"',"+A+")";
+    String sql2=" update  team set currentbudget="+Budget+" where teamname='"+T+"'  ";
            
-    db.st.executeUpdate(sql);
+    db.st.executeUpdate(sql1);
+    db.st.executeUpdate(sql2);
             System.out.println("sponsor Added ");
             JOptionPane.showMessageDialog(this,"sponsor  Added ");
           if(Repeatall.isSelected()) { 

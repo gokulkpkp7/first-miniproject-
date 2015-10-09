@@ -16,10 +16,8 @@ public class ManagerStart {
      */
     public static void main(String[] args) {
         // TODO code application logic here  System.out.println("Run()");
-          
-            AdminFace x=new AdminFace();
-            x.setVisible(true);  
-        /*try{
+             
+         try{
                          System.out.println("Run()->try");
                     Thread.sleep(2000);
                     for(int i=0;i<=5;i++){
@@ -29,8 +27,8 @@ public class ManagerStart {
                 catch(Exception e)
                 { 
                     System.out.println(e);
-                }*/
-     //   new Login().setVisible(true);
+                } 
+       new Login().setVisible(true);
 
     } 
 }

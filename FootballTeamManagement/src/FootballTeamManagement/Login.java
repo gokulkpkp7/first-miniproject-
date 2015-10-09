@@ -218,7 +218,7 @@ public class Login extends javax.swing.JFrame {
         });
     }
     
-    public void login(){
+   public void login(){
         String U=Username.getText();
         String P = Password.getText();
         int count=0;
