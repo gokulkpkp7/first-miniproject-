@@ -21,7 +21,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Log In ");
         this.setIconImage(new ImageIcon(getClass().getResource("logo.jpg")).getImage());
-        
+        System.out.println("this is for AjayKrishnan");
         
     }
 
