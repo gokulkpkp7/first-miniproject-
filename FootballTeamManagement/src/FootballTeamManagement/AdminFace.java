@@ -12,13 +12,16 @@ import net.proteanit.sql.DbUtils;
  * @author jayakrishnan
  */
 public class AdminFace extends javax.swing.JFrame {
- 
-    /**
+    AddTeam AddT=new AddTeam();
+    AddPlayer AddP=new AddPlayer();
+    AddSponsor AddS=new AddSponsor();
+
+ /**
      * Creates new form AdminFace
      */
     public AdminFace() {
         initComponents();   
-  setExtendedState(MAXIMIZED_BOTH); 
+            setExtendedState(MAXIMIZED_BOTH); 
     }
 
     /**
@@ -208,12 +211,12 @@ public class AdminFace extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-900)/2, (screenSize.height-500)/2, 900, 500);
+        setSize(new java.awt.Dimension(900, 500));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -280,20 +283,28 @@ public class AdminFace extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        new AddSponsor().setVisible(true);
+        // TODO add your handling code here: 
+         if(!AddS.isVisible()){
+           AddS.setVisible(true);
+           
+         }
+
         
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        
-        new AddPlayer().setVisible(true);
+       if(!AddP.isVisible()){
+           AddP.setVisible(true);
+         }
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new AddTeam().setVisible(true);
+          if(!AddT.isVisible()){
+           AddT.setVisible(true);
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked

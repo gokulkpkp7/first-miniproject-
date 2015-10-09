@@ -17,12 +17,8 @@ public class ManagerStart {
     public static void main(String[] args) {
         // TODO code application logic here  System.out.println("Run()");
              
-         try{
-                         System.out.println("Run()->try");
-                    Thread.sleep(2000);
-                    for(int i=0;i<=5;i++){
-                         System.out.println(i);
-            }
+         try{ 
+                    Thread.sleep(2000); 
                 }
                 catch(Exception e)
                 { 
