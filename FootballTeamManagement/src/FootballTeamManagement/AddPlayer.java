@@ -287,11 +287,18 @@ public class AddPlayer extends javax.swing.JFrame {
         });
     }
     public void Submit(){
-        
+        float Rating=0.0f;
         String N=Playername.getText();
         String B = Playerrating.getText();
         String R=Playerteam.getText();
         String Ag=Age.getText();
+        try{
+                Rating=Float.parseFloat(B);
+        }
+        catch(Exception e){
+            System.out.println("Player Rating Not a Float");
+        }
+        
         if(N.length()==0){
             JOptionPane.showMessageDialog(this, "Specify Player Name");
             Playername.requestFocus();
@@ -312,9 +319,15 @@ public class AddPlayer extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Specify Player rating ");
             Playerrating.requestFocus();
         }
-        else if( (!checkIfNumber(B)) || (Long.parseLong(B)<=0.99) ||(Long.parseLong(B)>=10.1) ){
-            JOptionPane.showMessageDialog(this,"Rating Must be a number    between 1 and 10 ");
-            Playerrating.requestFocus();
+        else if(   !checkIfNumber(B)){
+            JOptionPane.showMessageDialog(this,"Rating Must be a number   ");
+            Playerrating.requestFocus(); 
+            System.out.println("B"+B);
+            System.out.println("Rating"+Rating);
+        }
+        else if(  (Rating<1.0f) ||(Rating>10.0f) ){
+            JOptionPane.showMessageDialog(this,"Rating Must be between 1 and 10 ");
+            Playerrating.requestFocus(); 
         }
         else if(Ag.length()==0){
             JOptionPane.showMessageDialog(this,"Specify Player Age ");
@@ -381,9 +394,11 @@ public class AddPlayer extends javax.swing.JFrame {
                 System.out.println(N);
                 System.out.println(R);
                 System.out.println(B);
+                System.out.println(Rating);
 
-try{
-    String sql=" INSERT INTO player(PLAYERID,PLAYERNAME,PLAYERTEAM,PLAYERRATING,AGE)   VALUES ('"+count+"','"+N+"', '"+R+"',"+B+","+Ag+")";
+try{ 
+    String sql=" INSERT INTO player(PLAYERID,PLAYERNAME,PLAYERTEAM,PLAYERRATING,AGE)"
+            + "   VALUES ('"+count+"','"+N+"', '"+R+"',"+Rating+","+Ag+")";
            
     db.st.executeUpdate(sql);
             System.out.println("player Added ");
@@ -411,7 +426,7 @@ try{
         
         try {
  
-            Long.parseLong(in);
+            Float.parseFloat(in);
         
         } catch (NumberFormatException ex) {
             return false;
