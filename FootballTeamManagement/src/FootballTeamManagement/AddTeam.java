@@ -147,8 +147,8 @@ public class AddTeam extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-416)/2, (screenSize.height-339)/2, 416, 339);
+        setSize(new java.awt.Dimension(416, 339));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void TeamnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TeamnameKeyPressed
@@ -311,9 +311,7 @@ try{
             }
         }
         }
-        }
-        System.out.println(N);
-        System.out.println(B);
+        } 
         
         
     }
