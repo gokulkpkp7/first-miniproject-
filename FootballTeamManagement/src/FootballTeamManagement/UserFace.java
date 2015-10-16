@@ -350,6 +350,8 @@ class ButtonEditor extends DefaultCellEditor {
   private String label;
 
   private boolean isPushed;
+  private int rowno=0;//new 
+  private int current_row_value=0;//new 
 
   public ButtonEditor(JCheckBox checkBox) {
     super(checkBox);
@@ -364,17 +366,18 @@ class ButtonEditor extends DefaultCellEditor {
 
   public Component getTableCellEditorComponent(JTable table, Object value,
       boolean isSelected, int row, int column) {
-      System.out.println("Hello");
-    if (isSelected) {
+//      System.out.println("Hello");
+//    if (isSelected) {
 //      button.setForeground(table.getSelectionForeground());
 //      button.setBackground(table.getSelectionBackground());
-    } else {
+//    } else {
 //      button.setForeground(table.getForeground());
 //      button.setBackground(table.getBackground());
-    }
+//    }
     label = (value == null) ? "" : value.toString();
     button.setText(label);
     isPushed = true;
+    rowno=row;//new 
     return button;
   }
 
@@ -383,7 +386,8 @@ class ButtonEditor extends DefaultCellEditor {
       // 
       // 
         
-      JOptionPane.showMessageDialog(button, label + ": Ouch!");
+        current_row_value=getprimarykeyvalue(rowno);
+      JOptionPane.showMessageDialog(button, label + ": Ouch!"+current_row_value);//new 
       // System.out.println(label + ": Ouch!");
 
     }
@@ -400,6 +404,16 @@ class ButtonEditor extends DefaultCellEditor {
   protected void fireEditingStopped() {
     super.fireEditingStopped();
   }
+  private int  getprimarykeyvalue(int rowno) {
+           
+        
+        Object data = (Object)jT1.getValueAt(rowno, 0);     
+        int x;
+        
+        String toString = data.toString();
+             return Integer.parseInt(toString);
+         
+        }
 }    
 
     
