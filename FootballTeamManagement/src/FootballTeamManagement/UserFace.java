@@ -37,32 +37,12 @@ public class UserFace extends javax.swing.JFrame {
      */
     public UserFace(String U) {
        
+            Uteam = U;
             initComponents();
             setbasedetails(U);
-            int id;
-            String from;
-            String to;
-            float amt;
             
-            Uteam = U;
            
-        try {
-              ResultSet r;
-            r = db.st.executeQuery("SELECT * FROM request where CURRENT_TEAM='" + Uteam + "'");
-        
-             
-            while( r.next()){
-                id=r.getInt(1)  ;
-                from=r.getString(3)  ;
-                to=r.getString(2)  ;
-                amt=r.getFloat(4)  ;
-                System.out.println(id+" "+ from +" "+ to +" "+ amt);
-                addinboxitems(from+"bids player '"+to+"' for  "+amt,id);
-            }
-                r.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(UserFace.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       inboxitem();
         
      
     }
@@ -163,13 +143,13 @@ public class UserFace extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(392, Short.MAX_VALUE)
                 .addComponent(jb)
                 .addGap(164, 164, 164))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,20 +189,21 @@ public class UserFace extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(refresh2)
-                .addGap(28, 28, 28))
+                .addGap(53, 53, 53))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(refresh2))
+                .addComponent(refresh2)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(63, Short.MAX_VALUE))
         );
 
@@ -252,7 +233,7 @@ public class UserFace extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addComponent(jLabel1)
                 .addGap(19, 19, 19))
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,26 +270,12 @@ public class UserFace extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActionPerformed
-        String sql = "SELECT  * FROM player where playerteam in '" + Uteam + "'  ";
-
-        refresh_table_2(sql, jT1);
-        jT1.removeColumn(jT1.getColumnModel().getColumn(6));
-
+refreshjt1();   
     }//GEN-LAST:event_jbActionPerformed
 
     private void refresh2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refresh2ActionPerformed
-        // TODO add your handling code here:
-        String sql = "SELECT  * FROM player where PLAYERTEAM not in '" + Uteam + "' and transfer='Remove' ";
-
-        refresh_table_2(sql, jT2);
-
-        DefaultTableModel model = (DefaultTableModel) jT2.getModel();
-
-        jT2.removeColumn(jT2.getColumnModel().getColumn(5));
-//        model.addColumn("Buy");
-        jT2.getColumn("BUY").setCellRenderer(new ButtonRenderer());
-        jT2.getColumn("BUY").setCellEditor(new ButtonEditor(new JCheckBox()));
-
+refreshjt2(); 
+     
     }//GEN-LAST:event_refresh2ActionPerformed
 
     /**
@@ -357,22 +324,10 @@ public class UserFace extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e);
         } 
-    String sql = "SELECT  * FROM player where playerteam in '" + U+ "'  ";
-
-        refresh_table_2(sql, jT1);
-        jT1.removeColumn(jT1.getColumnModel().getColumn(6));
-
+ 
  // refresh on load table 2 bye table
-         sql = "SELECT  * FROM player where PLAYERTEAM not in '" + U + "' and transfer='Remove' ";
-
-        refresh_table_2(sql, jT2);
-
-        DefaultTableModel model = (DefaultTableModel) jT2.getModel();
-
-        jT2.removeColumn(jT2.getColumnModel().getColumn(5));
-//        model.addColumn("Buy");
-        jT2.getColumn("BUY").setCellRenderer(new ButtonRenderer());
-        jT2.getColumn("BUY").setCellEditor(new ButtonEditor(new JCheckBox()));
+ refreshjt1();
+        refreshjt2();
 
     }
 
@@ -417,6 +372,9 @@ Accept1.addActionListener( new ActionListener()
 //        System.out.println("Do Something, Accept1 Clicked"+Accept1.JKintValue);
         try{
              db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" ");
+      
+       jp3.removeAll();
+       inboxitem();
        jp3.revalidate();
        jp3.repaint();
         }catch(Exception ex){
@@ -431,6 +389,61 @@ Accept1.addActionListener( new ActionListener()
         System.out.println("Do Something Decline1 Clicked"+Decline1.JKintValue);
     }
 });
+    }
+
+    private void refreshjt2() {
+      String sql = "SELECT  * FROM player where PLAYERTEAM not in '" + Uteam + "' and transfer='Remove' ";
+
+        refresh_table_2(sql, jT2);
+
+        DefaultTableModel model = (DefaultTableModel) jT2.getModel();
+
+//        model.addColumn("Buy");
+        jT2.getColumn("BUY").setCellRenderer(new ButtonRenderer());
+        jT2.getColumn("BUY").setCellEditor(new ButtonEditor(new JCheckBox()));
+        jT2.getColumnModel().getColumn(0).setWidth(0); 
+        jT2.getColumnModel().getColumn(0).setMinWidth(0);
+        jT2.getColumnModel().getColumn(0).setMaxWidth(0);
+        jT2.removeColumn(jT2.getColumnModel().getColumn(5));  
+
+    }
+
+    private void refreshjt1() {
+        String sql = "SELECT  * FROM player where playerteam in '" + Uteam + "'  ";
+
+        refresh_table_2(sql, jT1);
+        jT1.getColumnModel().getColumn(0).setWidth(0); 
+        jT1.getColumnModel().getColumn(0).setMinWidth(0);
+        jT1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jT1.removeColumn(jT1.getColumnModel().getColumn(2));
+        jT1.removeColumn(jT1.getColumnModel().getColumn(5));
+
+    }
+
+    private void inboxitem() {
+        
+            int id;
+            String from;
+            String to;
+            float amt;
+  try {
+              ResultSet r;
+            r = db.st.executeQuery("SELECT * FROM request where CURRENT_TEAM='" + Uteam + "'");
+        
+             
+            while( r.next()){
+                id=r.getInt(1)  ;
+                from=r.getString(3)  ;
+                to=r.getString(2)  ;
+                amt=r.getFloat(4)  ;
+                System.out.println(id+" "+ from +" "+ to +" "+ amt);
+                addinboxitems(from+" bids player '"+to+"'( "+id+" ) for  "+amt,id);
+            }
+                r.close();
+                inboxcurrheight=10;
+        } catch (SQLException ex) {
+            Logger.getLogger(UserFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
