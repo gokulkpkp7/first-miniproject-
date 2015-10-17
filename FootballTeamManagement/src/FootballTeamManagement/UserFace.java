@@ -263,19 +263,7 @@ public class UserFace extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActionPerformed
-       String sql="SELECT  * FROM player";
-         try{
-            int i=0;
-        ResultSet r = db.st.executeQuery(sql); 
-        setVisible(true);
-        jT1.setModel(DbUtils.resultSetToTableModel(r));
-        jT1.getColumn("TRANSFER").setCellRenderer(new ButtonRenderer());
-        jT1.getColumn("TRANSFER").setCellEditor(new ButtonEditor(new JCheckBox()));
-        }
-        catch(Exception e)
-        {
-            System.out.println(e);
-        }
+       refresh_table_2();
     }//GEN-LAST:event_jbActionPerformed
 
     /**
@@ -324,6 +312,26 @@ public class UserFace extends javax.swing.JFrame {
         {
              System.out.println(e);
         }
+    }
+
+    private void refresh_table_2() {
+  String sql="SELECT  * FROM player";
+         try{
+    
+        int i=0;
+    
+        ResultSet r = db.st.executeQuery(sql); 
+        jT1.setModel(DbUtils.resultSetToTableModel(r));
+        jT1.getColumn("TRANSFER").setCellRenderer(new ButtonRenderer());
+        jT1.getColumn("TRANSFER").setCellEditor(new ButtonEditor(new JCheckBox()));
+         r.close();
+         }
+        catch(Exception e)
+        {
+            System.out.println(e);
+        
+        }
+    
     }
     
     class ButtonRenderer extends JButton implements TableCellRenderer {
@@ -378,7 +386,7 @@ class ButtonEditor extends DefaultCellEditor {
     label = (value == null) ? "" : value.toString();
     button.setText(label);
     isPushed = true;
-    rowno=row;//new 
+    rowno=row;//new jk
     return button;
   }
 
@@ -386,20 +394,23 @@ class ButtonEditor extends DefaultCellEditor {
       String sqlupdatetransfer;
     if (isPushed) {
       // 
-      // 
-        
+      //  
         current_row_value=getprimarykeyvalue(rowno);
       System.out.println("label"+label);
             if(label.toLowerCase().equals("transfer")) {
              sqlupdatetransfer = "update player set transfer='Remove' where playerid='" + current_row_value + "'";
+             
         } else {
              sqlupdatetransfer = "update player set transfer='Transfer' where playerid='" + current_row_value + "'";
         }
           try {
               db.st.executeUpdate(sqlupdatetransfer);
-          } catch (SQLException ex) {
+              
+              
+          } catch (Exception ex) {
+              
             }
-        JOptionPane.showMessageDialog(button, label + ": Ouch!"+current_row_value);//new 
+//        JOptionPane.showMessageDialog(button, label + ": Ouch!"+current_row_value);//new 
       // System.out.println(label + ": Ouch!");
 
     } 

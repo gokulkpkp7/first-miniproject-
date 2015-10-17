@@ -17,6 +17,7 @@ public class dbhandler {
     public dbhandler(){
          try{
             Class.forName("oracle.jdbc.driver.OracleDriver");
+        System.out.println("class");
              conn=DriverManager.getConnection(
 					"jdbc:oracle:thin:@localhost:1521:orcl", "scott",
 					"password");
