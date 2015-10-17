@@ -7,7 +7,7 @@ package FootballTeamManagement;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.ResultSet; 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -15,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 import javax.swing.table.TableCellRenderer;
 
@@ -22,17 +23,20 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author jayakrishnan
  */
-
 public class UserFace extends javax.swing.JFrame {
 
-       dbhandler db =new dbhandler();
+    dbhandler db = new dbhandler();
+    String Uteam = null;
+
     /**
      * Creates new form UserFace
      */
     public UserFace(String U) {
         initComponents();
         setbasedetails(U);
-    } 
+        Uteam = U;
+    }
+
     public UserFace() {
         initComponents();
         this.dispose();
@@ -62,7 +66,9 @@ public class UserFace extends javax.swing.JFrame {
         jT1 = new javax.swing.JTable();
         javax.swing.JButton jb = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        refresh2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jT2 = new javax.swing.JTable();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         LabelTeamName = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -97,7 +103,7 @@ public class UserFace extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Declane");
+        jButton2.setText("Decline");
 
         jLabel4.setText("Team x bid y for z dollers ");
 
@@ -107,11 +113,11 @@ public class UserFace extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addGap(67, 67, 67)
                 .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -176,23 +182,45 @@ public class UserFace extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButton4.setText("Buy");
+        refresh2.setText("refresh");
+        refresh2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refresh2ActionPerformed(evt);
+            }
+        });
+
+        jT2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jT2);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(574, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addComponent(refresh2)
                 .addGap(28, 28, 28))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(jButton4)
-                .addContainerGap(367, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(refresh2))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Transfer Listed", jPanel4);
@@ -253,18 +281,37 @@ public class UserFace extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
-            this.dispose();
-            new Login().setVisible(true);
+        this.dispose();
+        new Login().setVisible(true);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbActionPerformed
-       refresh_table_2();
+        String sql = "SELECT  * FROM player where playerteam in '"+Uteam+"'  ";
+
+        refresh_table_2(sql, jT1);
+        jT1.removeColumn(jT1.getColumnModel().getColumn(6));
+
     }//GEN-LAST:event_jbActionPerformed
+
+    private void refresh2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refresh2ActionPerformed
+        // TODO add your handling code here:
+        String sql = "SELECT  * FROM player where PLAYERTEAM not in '" + Uteam + "' and transfer='Remove' ";
+
+        refresh_table_2(sql, jT2);
+
+        DefaultTableModel model = (DefaultTableModel) jT2.getModel();
+
+        jT2.removeColumn(jT2.getColumnModel().getColumn(5));
+//        model.addColumn("Buy");
+        jT2.getColumn("BUY").setCellRenderer(new ButtonRenderer());
+        jT2.getColumn("BUY").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+    }//GEN-LAST:event_refresh2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,81 +347,81 @@ public class UserFace extends javax.swing.JFrame {
             }
         });
     }
-    public  void setbasedetails(String U){
+
+    public void setbasedetails(String U) {
         LabelTeamName.setText(U);
-        BudgetLabel.setText("---"); 
-        dbhandler db=new dbhandler();
-        try{
-              ResultSet r = db.st.executeQuery("SELECT currentbudget FROM team where teamname='"+U+"'");
-                r.next();
-                   BudgetLabel.setText(r.getString(1));   
-}catch(Exception e)
-        {
-             System.out.println(e);
+        BudgetLabel.setText("---");
+        dbhandler db = new dbhandler();
+        try {
+            ResultSet r = db.st.executeQuery("SELECT currentbudget FROM team where teamname='" + U + "'");
+            r.next();
+            BudgetLabel.setText(r.getString(1));
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
-    private void refresh_table_2() {
-  String sql="SELECT  * FROM player";
-         try{
-    
-        int i=0;
-    
-        ResultSet r = db.st.executeQuery(sql); 
-        jT1.setModel(DbUtils.resultSetToTableModel(r));
-        jT1.getColumn("TRANSFER").setCellRenderer(new ButtonRenderer());
-        jT1.getColumn("TRANSFER").setCellEditor(new ButtonEditor(new JCheckBox()));
-         r.close();
-         }
-        catch(Exception e)
-        {
+    private void refresh_table_2(String sql, JTable jT) {
+        try {
+
+            int i = 0;
+
+            ResultSet r = db.st.executeQuery(sql);
+            jT.setModel(DbUtils.resultSetToTableModel(r));
+            jT.getColumn("TRANSFER").setCellRenderer(new ButtonRenderer());
+            jT.getColumn("TRANSFER").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+            r.close();
+        } catch (Exception e) {
             System.out.println(e);
-        
+
         }
-    
+
     }
-    
+
     class ButtonRenderer extends JButton implements TableCellRenderer {
 
-  public ButtonRenderer() {
-    setOpaque(true);
-  }
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
 
-  public Component getTableCellRendererComponent(JTable table, Object value,
-      boolean isSelected, boolean hasFocus, int row, int column) {
-    if (isSelected) {
-      setForeground(table.getSelectionForeground());
-      setBackground(table.getSelectionBackground());
-    } else {
-      setForeground(table.getForeground());
-      setBackground(UIManager.getColor("Button.background"));
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
     }
-    setText((value == null) ? "" : value.toString());
-    return this;
-  }
-}
-class ButtonEditor extends DefaultCellEditor {
-  protected JButton button;
 
-  private String label;
+    class ButtonEditor extends DefaultCellEditor {
 
-  private boolean isPushed;
-  private int rowno=0;//new 
-  private int current_row_value=0;//new 
+        protected JButton button;
 
-  public ButtonEditor(JCheckBox checkBox) {
-    super(checkBox);
-    button = new JButton();
-    button.setOpaque(true);
-    button.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        fireEditingStopped();
-      }
-    });
-  }
+        private String label;
 
-  public Component getTableCellEditorComponent(JTable table, Object value,
-      boolean isSelected, int row, int column) {
+        private boolean isPushed;
+        private int rowno = 0;//new 
+        private int current_row_value = 0;//new 
+
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
 //      System.out.println("Hello");
 //    if (isSelected) {
 //      button.setForeground(table.getSelectionForeground());
@@ -383,69 +430,89 @@ class ButtonEditor extends DefaultCellEditor {
 //      button.setForeground(table.getForeground());
 //      button.setBackground(table.getBackground());
 //    }
-    label = (value == null) ? "" : value.toString();
-    button.setText(label);
-    isPushed = true;
-    rowno=row;//new jk
-    return button;
-  }
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            rowno = row;
+            return button;
+        }
 
-  public Object getCellEditorValue() {
-      String sqlupdatetransfer;
-    if (isPushed) {
+        public Object getCellEditorValue() {
+            String sqlupdatetransfer;
+            if (isPushed && (!label.toLowerCase().equals("buy"))) {
       // 
-      //  
-        current_row_value=getprimarykeyvalue(rowno);
-      System.out.println("label"+label);
-            if(label.toLowerCase().equals("transfer")) {
-             sqlupdatetransfer = "update player set transfer='Remove' where playerid='" + current_row_value + "'";
-             
-        } else {
-             sqlupdatetransfer = "update player set transfer='Transfer' where playerid='" + current_row_value + "'";
-        }
-          try {
-              db.st.executeUpdate(sqlupdatetransfer);
-              
-              
-          } catch (Exception ex) {
-              
-            }
+                //  
+                current_row_value = getprimarykeyvalue(rowno,jT1);
+                System.out.println("label" + label);
+                if (label.toLowerCase().equals("transfer")) {
+                    sqlupdatetransfer = "update player set transfer='Remove' where playerid='" + current_row_value + "'";
+
+                } else {
+                    sqlupdatetransfer = "update player set transfer='Transfer' where playerid='" + current_row_value + "'";
+                }
+                try {
+                    db.st.executeUpdate(sqlupdatetransfer);
+                } catch (Exception ex) {
+
+                }
 //        JOptionPane.showMessageDialog(button, label + ": Ouch!"+current_row_value);//new 
-      // System.out.println(label + ": Ouch!");
+                // System.out.println(label + ": Ouch!");
 
-    } 
-    isPushed = false;
-    
-    return new String(label);
-  }
+            }
+            else if(isPushed &&(label.toLowerCase().equals("buy"))) {
 
-  public boolean stopCellEditing() {
-    isPushed = false;
-    return super.stopCellEditing();
-  }
+                current_row_value = getprimarykeyvalue(rowno,jT2);
+                String sql="SELECT * FROM player WHERE playerid="+current_row_value+"  ";
+                try{
+                ResultSet r=db.st.executeQuery(sql);
+                r.next();
+                int player_id=r.getInt(1);
+                String srcteam=r.getString(3);
+                String dsteam=Uteam;
+                int amt=500;
+                System.out.println("  "+player_id+"  "+srcteam+"  "+dsteam+"  "+amt+"");
+                sql="INSERT INTO request( PLAYERID,CURRENT_TEAM,OFFER_FROM,OFFERED_AMOUNT,STATUS)"
+                        + " VALUES("+player_id+",'"+srcteam+"','"+dsteam+"',"+amt+",1)";
+                db.st.execute(sql); 
+                System.out.println("  "+player_id+"  "+srcteam+"  "+dsteam+"  "+amt+"");
+                }
+                catch(Exception e){
+                    
+                }
+                
+            }
+            
+            isPushed = false;
 
-  protected void fireEditingStopped() {
-    super.fireEditingStopped();
-  }
-  private int  getprimarykeyvalue(int rowno) {
-           
-        
-        Object data = (Object)jT1.getValueAt(rowno, 0);     
-        int x;
-        
-        String toString = data.toString();
-             return Integer.parseInt(toString);
-         
+            return new String(label);
         }
-}    
 
-    
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+
+        protected void fireEditingStopped() {
+            super.fireEditingStopped();
+        }
+
+        private int getprimarykeyvalue(int rowno,JTable jT) {
+
+            Object data = (Object) jT.getValueAt(rowno, 0);
+            int x;
+
+            String toString = data.toString();
+            return Integer.parseInt(toString);
+
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BudgetLabel;
     private javax.swing.JLabel LabelTeamName;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -455,11 +522,12 @@ class ButtonEditor extends DefaultCellEditor {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jT1;
+    private javax.swing.JTable jT2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JButton refresh2;
     // End of variables declaration//GEN-END:variables
 
-  
-    
-    }
+}
