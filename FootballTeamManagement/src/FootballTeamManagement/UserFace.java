@@ -557,6 +557,7 @@ Decline1.addActionListener( new ActionListener()
                 } else {
                     sqlupdatetransfer = "update player set transfer='Transfer' where playerid='" + current_row_value + "'";
                 }
+
                 try {
                     db.st.executeUpdate(sqlupdatetransfer);
                 } catch (Exception ex) {
@@ -568,7 +569,7 @@ Decline1.addActionListener( new ActionListener()
             } else if (isPushed && (label.toLowerCase().equals("buy"))) {
     current_row_value = getprimarykeyvalue(rowno, jT2);
                 String sql = "SELECT * FROM player WHERE playerid=" + current_row_value + "  ";
-                
+              
            Bidding Bi =new Bidding(sql,Uteam);
            Bi.setVisible(true);
 

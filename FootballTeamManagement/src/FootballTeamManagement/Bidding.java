@@ -6,6 +6,7 @@
 package FootballTeamManagement;
 
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,16 +15,13 @@ import java.sql.ResultSet;
 public class Bidding extends javax.swing.JFrame {
 String sql;
 String Uteam;
-dbhandler db;
     /**
      * Creates new form Bidding
      */
     public Bidding(String sql1,String Uteam1) {
         initComponents();
-        db=new dbhandler(); 
        sql=sql1;
        Uteam=Uteam1;
-        
     }
 
     /**
@@ -116,22 +114,59 @@ dbhandler db;
     }//GEN-LAST:event_BidamtKeyPressed
 
     private void biditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_biditActionPerformed
-        float amt=Float.parseFloat(Bidamt.getText());
-         
+       // float amt=Float.parseFloat(Bidamt.getText());
+       //  System.out.println(amt);
+        int player_id;player_id=0;
+        dbhandler db=new dbhandler();
+        
+
         try {
                     ResultSet r = db.st.executeQuery(sql);
                     r.next();
-                    int player_id = r.getInt(1);
-                    String srcteam = r.getString(3);
-                    String dsteam = Uteam; 
-                    
-                    System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
-                    sql = "INSERT INTO request( PLAYER_ID,OFFER_FROM,OFFER_AMOUNT,STATUS)"
-                            + " VALUES(" + player_id + ",'" + dsteam + "'," + amt + ",1)";
-                    db.st.execute(sql);
-                } catch (Exception e) {
+                     player_id = r.getInt(1); 
+          } catch (Exception e) {
+System.out.println(e);
+                } 
+        
+                    String dsteam = "a"; 
+                    player_id=5;
+                    float amt=Float.parseFloat(Bidamt.getText());
+                    String sql1=" ";
+                    int status=1;
+ 
+        try { 
+
+            ResultSet t=db.st.executeQuery("select status from request where PLAYER_ID="+player_id+" and OFFER_FROM='"+dsteam+"' ");
+            if(t.next()){
+                status=t.getInt(1);
+                if(status==0){
+                    sql1="update request set STATUS=1 ,OFFER_AMOUNT="+amt+" where  "
+                            + "PLAYER_ID="+player_id+" and OFFER_FROM='"+dsteam+"' ";
+                                db.st.execute(sql1);
+JOptionPane.showMessageDialog(this, "Bidding Successful");
+                    this.dispose();
 
                 }
+            }else{
+                
+
+                     sql1 = "INSERT INTO request(PLAYER_ID,OFFER_FROM,OFFER_AMOUNT,STATUS)"
+                            + " VALUES(" + player_id + ",'" + dsteam + "'," + amt + ",1)";
+
+                    db.st.execute(sql1);
+JOptionPane.showMessageDialog(this, "Bidding Successful");
+                    this.dispose();
+                     
+            }
+             
+                     
+                
+             
+        } catch (Exception e) {
+System.out.println(e);
+JOptionPane.showMessageDialog(this, "Error in  update/insert bidding");
+                    this.dispose();
+                } 
         
     }//GEN-LAST:event_biditActionPerformed
 
