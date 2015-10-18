@@ -566,24 +566,11 @@ Decline1.addActionListener( new ActionListener()
                 // System.out.println(label + ": Ouch!");
 
             } else if (isPushed && (label.toLowerCase().equals("buy"))) {
-
-                current_row_value = getprimarykeyvalue(rowno, jT2);
+    current_row_value = getprimarykeyvalue(rowno, jT2);
                 String sql = "SELECT * FROM player WHERE playerid=" + current_row_value + "  ";
-                try {
-                    ResultSet r = db.st.executeQuery(sql);
-                    r.next();
-                    int player_id = r.getInt(1);
-                    String srcteam = r.getString(3);
-                    String dsteam = Uteam;
-                    int amt = 500;
-                    System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
-                    sql = "INSERT INTO request( PLAYER_ID,OFFER_FROM,OFFER_AMOUNT,STATUS)"
-                            + " VALUES(" + player_id + ",'" + dsteam + "'," + amt + ",1)";
-                    db.st.execute(sql);
-                    System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
-                } catch (Exception e) {
-
-                }
+                
+           Bidding Bi =new Bidding(sql,Uteam);
+           Bi.setVisible(true);
 
             }
 

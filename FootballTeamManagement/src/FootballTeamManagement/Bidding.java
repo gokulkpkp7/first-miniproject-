@@ -5,17 +5,25 @@
  */
 package FootballTeamManagement;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author jayakrishnan
  */
 public class Bidding extends javax.swing.JFrame {
-
+String sql;
+String Uteam;
+dbhandler db;
     /**
      * Creates new form Bidding
      */
-    public Bidding() {
+    public Bidding(String sql1,String Uteam1) {
         initComponents();
+        db=new dbhandler(); 
+       sql=sql1;
+       Uteam=Uteam1;
+        
     }
 
     /**
@@ -27,21 +35,105 @@ public class Bidding extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel2 = new javax.swing.JPanel();
+        bidit = new javax.swing.JButton();
+        Bidamt = new javax.swing.JTextField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        bidit.setText("Bid");
+        bidit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                biditActionPerformed(evt);
+            }
+        });
+
+        Bidamt.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        Bidamt.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        Bidamt.setToolTipText("");
+        Bidamt.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true), "Offering Amount (in Million)", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 12), java.awt.Color.black)); // NOI18N
+        Bidamt.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        Bidamt.setSelectionColor(new java.awt.Color(255, 51, 51));
+        Bidamt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BidamtActionPerformed(evt);
+            }
+        });
+        Bidamt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BidamtKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(Bidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(141, 141, 141)
+                        .addComponent(bidit)))
+                .addGap(0, 80, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(Bidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(bidit)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
+        setSize(new java.awt.Dimension(369, 198));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BidamtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BidamtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BidamtActionPerformed
+
+    private void BidamtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BidamtKeyPressed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_BidamtKeyPressed
+
+    private void biditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_biditActionPerformed
+        float amt=Float.parseFloat(Bidamt.getText());
+         
+        try {
+                    ResultSet r = db.st.executeQuery(sql);
+                    r.next();
+                    int player_id = r.getInt(1);
+                    String srcteam = r.getString(3);
+                    String dsteam = Uteam; 
+                    
+                    System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
+                    sql = "INSERT INTO request( PLAYER_ID,OFFER_FROM,OFFER_AMOUNT,STATUS)"
+                            + " VALUES(" + player_id + ",'" + dsteam + "'," + amt + ",1)";
+                    db.st.execute(sql);
+                } catch (Exception e) {
+
+                }
+        
+    }//GEN-LAST:event_biditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,14 +162,12 @@ public class Bidding extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Bidding().setVisible(true);
-            }
-        });
+ 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Bidamt;
+    private javax.swing.JButton bidit;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
