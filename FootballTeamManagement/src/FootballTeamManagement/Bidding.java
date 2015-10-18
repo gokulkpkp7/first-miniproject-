@@ -15,6 +15,13 @@ import javax.swing.JOptionPane;
 public class Bidding extends javax.swing.JFrame {
 String sql;
 String Uteam;
+       int player_id=0;
+       int player_age=0;
+       float basevalue=0f;
+       float player_rating=0f;
+
+       dbhandler db=new dbhandler();
+
     /**
      * Creates new form Bidding
      */
@@ -22,6 +29,20 @@ String Uteam;
         initComponents();
        sql=sql1;
        Uteam=Uteam1;
+       try {
+                    ResultSet r = db.st.executeQuery(sql);
+                    r.next();
+                     player_id = r.getInt(1);
+                     player_age = r.getInt(2);
+                     player_rating = r.getFloat(3);
+                     basevalue=2.5f+((player_rating*8.32f)-(player_age*0.23f));
+                     r.close(); 
+                   basebid.setText(Float.toString((basevalue)));
+                   
+          } catch (Exception e) {
+System.out.println(e);
+                } 
+        
     }
 
     /**
@@ -36,6 +57,8 @@ String Uteam;
         jPanel2 = new javax.swing.JPanel();
         bidit = new javax.swing.JButton();
         Bidamt = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        basebid = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -65,6 +88,10 @@ String Uteam;
             }
         });
 
+        jLabel2.setText("Current Bid");
+
+        basebid.setText("Bid");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -78,11 +105,21 @@ String Uteam;
                         .addGap(141, 141, 141)
                         .addComponent(bidit)))
                 .addGap(0, 80, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(jLabel2)
+                .addGap(44, 44, 44)
+                .addComponent(basebid, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(9, 9, 9)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(basebid))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Bidamt, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(bidit)
@@ -116,21 +153,14 @@ String Uteam;
     private void biditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_biditActionPerformed
        // float amt=Float.parseFloat(Bidamt.getText());
        //  System.out.println(amt);
-        int player_id;player_id=0;
-        dbhandler db=new dbhandler();
-        
-
-        try {
-                    ResultSet r = db.st.executeQuery(sql);
-                    r.next();
-                     player_id = r.getInt(1);
-                     r.close();
-          } catch (Exception e) {
-System.out.println(e);
-                } 
         
                     String dsteam =Uteam; 
-                    float amt=Float.parseFloat(Bidamt.getText());
+                    float amt=Float.parseFloat(Bidamt.getText());                 
+                    if(basevalue>amt){                    
+    JOptionPane.showMessageDialog(this, "minimum bid for this player is "+basevalue);
+    
+                    }
+                    else{                
                     String sql1=" ";
                     int status=1;
  
@@ -143,13 +173,14 @@ System.out.println(e);
                     sql1="update request set STATUS=1 ,OFFER_AMOUNT="+amt+" where  "
                             + "PLAYER_ID="+player_id+" and OFFER_FROM='"+dsteam+"' ";
                                 db.st.execute(sql1);
-JOptionPane.showMessageDialog(this, "Bidding Successful [1] ");
+JOptionPane.showMessageDialog(this, "Bidding Successful  ");
                     this.dispose();
 
                 }
                 else{
-                    System.out.println("tausdkb");
-                   this.dispose();
+JOptionPane.showMessageDialog(this, "Bidding failed !Bid most probably exists ");
+                      
+                    this.dispose();
                  }
             }else{
                 
@@ -173,7 +204,7 @@ JOptionPane.showMessageDialog(this, "Error in  update/insert bidding");
                 } 
         
     }//GEN-LAST:event_biditActionPerformed
-
+    }
     /**
      * @param args the command line arguments
      */
@@ -206,7 +237,9 @@ JOptionPane.showMessageDialog(this, "Error in  update/insert bidding");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Bidamt;
+    private javax.swing.JLabel basebid;
     private javax.swing.JButton bidit;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

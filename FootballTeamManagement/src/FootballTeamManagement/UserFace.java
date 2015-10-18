@@ -571,7 +571,7 @@ Decline1.addActionListener( new ActionListener()
 
             } else if (isPushed && (label.toLowerCase().equals("buy"))) {
     current_row_value = getprimarykeyvalue(rowno, jT2);
-                String sql = "SELECT playerid FROM player WHERE playerid=" + current_row_value + "  ";
+                String sql = "SELECT PLAYERID,AGE,PLAYERRATING FROM player WHERE playerid=" + current_row_value + "  ";
               System.out.println("c"+current_row_value);
            Bidding Bi =new Bidding(sql,Uteam);
            Bi.setVisible(true);
