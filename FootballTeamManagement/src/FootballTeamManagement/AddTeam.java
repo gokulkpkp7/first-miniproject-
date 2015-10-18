@@ -4,12 +4,9 @@
  */
 package FootballTeamManagement;
 
-import java.awt.HeadlessException;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.awt.HeadlessException; 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.SQLException; 
 import javax.swing.JOptionPane;
 
 /**
@@ -17,25 +14,13 @@ import javax.swing.JOptionPane;
  * @author jayakrishnan
  */
 public class AddTeam extends javax.swing.JFrame {
-
- Connection conn;
-  Statement st; 
+ 
     /**
      * Creates new form AddTeam
      */
     public AddTeam() {
-        initComponents();  try{
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-             conn=DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:orcl", "scott",
-					"password");
-             st=conn.createStatement();
-   
-        }
-        catch(Exception e)
-        {
-             System.out.println(e);
-        }
+        initComponents();   
+        
     }
 
     /**
@@ -52,6 +37,8 @@ public class AddTeam extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         Teamnbu = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        Repeatall = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -107,6 +94,22 @@ public class AddTeam extends javax.swing.JFrame {
             }
         });
 
+        Repeatall.setBackground(new java.awt.Color(255, 255, 255));
+        Repeatall.setText(" Repeat");
+        Repeatall.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RepeatallActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Clear");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -116,6 +119,10 @@ public class AddTeam extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(34, 34, 34)
+                        .addComponent(Repeatall)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +141,10 @@ public class AddTeam extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(Teamnbu, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Repeatall)
+                    .addComponent(jLabel2))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -149,8 +159,8 @@ public class AddTeam extends javax.swing.JFrame {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-416)/2, (screenSize.height-339)/2, 416, 339);
+        setSize(new java.awt.Dimension(416, 339));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void TeamnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TeamnameKeyPressed
@@ -181,6 +191,17 @@ public class AddTeam extends javax.swing.JFrame {
         // TODO add your handling code here:
             Submit();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void RepeatallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RepeatallActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_RepeatallActionPerformed
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        this.dispose();
+        new AddTeam().setVisible(true);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -239,8 +260,9 @@ public class AddTeam extends javax.swing.JFrame {
         else { 
             int count=1;
             int countTeam=0;
+            dbhandler db=new dbhandler();
             try{
-                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team");
                 r.next();
                 count= r.getInt(1)+1;
                 r.close(); 
@@ -250,7 +272,7 @@ public class AddTeam extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
             }
             try{
-                ResultSet r = st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM team where TEAMNAME='"+N+"'");
                 r.next();
                 countTeam= r.getInt(1);
                 r.close(); 
@@ -264,11 +286,41 @@ public class AddTeam extends javax.swing.JFrame {
                 Teamname.requestFocus();
             }
             else{
+                
+                
+                
+                
+                
+                            try{
+                ResultSet r = db.st.executeQuery("SELECT COUNT(*) FROM login where USERNAME='"+N+"'");
+                r.next();
+                countTeam= r.getInt(1);
+                r.close(); 
+            }
+            catch(Exception e){
+                System.out.println(e);
+            JOptionPane.showMessageDialog(this,"Error Occured \n\t["+e+"]");
+            }
+            if(countTeam!=0){
+                JOptionPane.showMessageDialog(this,"Team Name Already exist in Login");
+                Teamname.requestFocus();
+            }
+            else{
+                
+                
 try{
-            st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
+            db.st.executeUpdate("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
                 "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
+            db.st.executeUpdate("INSERT INTO login(USERNAME,PASSWORD,ISADMIN) " + 
+                "VALUES ('"+N+"','"+N+"',0)");
              
             JOptionPane.showMessageDialog(this,"Team Added ");
+            if(Repeatall.isSelected()) { 
+              AddTeam A=new AddTeam(); 
+              A.setVisible(true);
+              A.Repeatall.setSelected(true);
+              
+          } 
             this.dispose();
             }
             catch(SQLException | HeadlessException e){
@@ -277,8 +329,7 @@ try{
             }
         }
         }
-        System.out.println(N);
-        System.out.println(B);
+        } 
         
         
     }
@@ -297,10 +348,12 @@ try{
         return true;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox Repeatall;
     private javax.swing.JTextField Teamname;
     private javax.swing.JTextField Teamnbu;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 
