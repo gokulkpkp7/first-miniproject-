@@ -35,3 +35,20 @@ amount number(8,5));
 
 
 insert into login values('admin','admin',1);
+-------------------------------------------------------------------------
+
+Team&Login
+---------
+
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('1','Arsenal', '20',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Arsenal','Arsenal',0);
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('2','Manchester United', '20',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Manchester United','Manchester United',0);
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('3','Chelsea', '20',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Chelsea','Chelsea',0);
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('4','Manchester City', '20',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Manchester City','Manchester City',0);
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('5','Liverpool', '20',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Liverpool','Liverpool',0);
+INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) VALUES ('6','Barcelona', '25',0);
+INSERT INTO login(USERNAME,PASSWORD,ISADMIN) VALUES ('Barcelona','Barcelona',0);

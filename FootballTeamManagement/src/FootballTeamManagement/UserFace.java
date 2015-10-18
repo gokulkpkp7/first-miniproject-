@@ -5,6 +5,7 @@
 package FootballTeamManagement;
 
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -349,9 +350,11 @@ refreshjt2();
 
     }
 
-            float frombudget;
-            float tobudget;
-            float offeredamt;
+            float frombudget=0.0f;
+            float tobudget=0.0f;
+            float offeredamt=0.0f;
+            int totp=0;
+            int fromtp=0;
     private void addinboxitems(String msg,int Avalue,String from1) {
         JLabel Inbox1 = new JLabel();
         final JKButton Accept1 = new JKButton();
@@ -376,31 +379,36 @@ Accept1.addActionListener( new ActionListener()
 //        System.out.println("Do Something, Accept1 Clicked"+Accept1.JKintValue);
         try{
             offeredamt=500.0f;
-            ResultSet r=db.st.executeQuery("select CURRENTBUDGET from team where TEAMNAME='"+from+"'");
-            r.next();
+            ResultSet r=db.st.executeQuery("select CURRENTBUDGET,TOTALPLAYERS from team where TEAMNAME='"+from+"'");
+            r.next(); 
             frombudget=Float.parseFloat(r.getString(1));
+            fromtp=r.getInt(2); 
             r.close();
-            ResultSet r1=db.st.executeQuery("select CURRENTBUDGET from team where TEAMNAME='"+Uteam+"'");
+            ResultSet r1=db.st.executeQuery("select CURRENTBUDGET,TOTALPLAYERS from team where TEAMNAME='"+Uteam+"'");
             r1.next();
             tobudget=Float.parseFloat(r1.getString(1));
+            totp=r1.getInt(2);
             r1.close();
-            
+            System.out.println("2 "+totp+" asdsad  "+tobudget+"   "+Uteam);
+            fromtp=fromtp+1;
+            totp=totp-1;
             if(frombudget>offeredamt)   {
                 
-                 db.st.execute("update team set CURRENTBUDGET="+(frombudget-offeredamt)+" where  TEAMNAME='"+from+"' ");
-                 db.st.execute("update team set CURRENTBUDGET="+(tobudget+offeredamt)+" where  TEAMNAME='"+Uteam+"' "); 
-                 db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" "); 
+                 db.st.executeUpdate("update team set CURRENTBUDGET="+(frombudget-offeredamt)+",TOTALPLAYERS="+fromtp+"   where  TEAMNAME='"+from+"' ");
+                 db.st.executeUpdate("update team set CURRENTBUDGET="+(tobudget+offeredamt)+"  ,TOTALPLAYERS="+totp+"  where  TEAMNAME='"+Uteam+"' "); 
+                 db.st.executeUpdate("update player set PLAYERTEAM='"+from+"' where PLAYERID="+Accept1.JKintValue+" "); 
+                                 db.st.execute("delete from request where PLAYER_ID="+Accept1.JKintValue+" "); 
       
             }
                  else {
                      JOptionPane.showMessageDialog(jp3,"Bidding Team has insufficient Balance ");
-                         }
+                       }
        jp3.removeAll();
        inboxitem();
        jp3.revalidate();
        jp3.repaint();
-        }catch(Exception ex){
-            System.out.println("delete player request unsuccessful");
+        }catch(SQLException | NumberFormatException | HeadlessException ex){
+            System.out.println(ex+"delete player request unsuccessful");
         } 
            
     }
@@ -411,7 +419,7 @@ Decline1.addActionListener( new ActionListener()
     {
         System.out.println("Do Something Decline1 Clicked"+Decline1.JKintValue);
         try { 
-            db.st.execute("update request set status=0 where PLAYERID="+Accept1.JKintValue+" and OFFER_FROM='"+from+"'");
+            db.st.execute("update request set status=0 where PLAYER_ID="+Accept1.JKintValue+" and OFFER_FROM='"+from+"'");
         } catch (SQLException ex) {
             System.out.println("update req failed");
         }
@@ -461,7 +469,7 @@ Decline1.addActionListener( new ActionListener()
             float amt;
   try {
               ResultSet r;
-            r = db.st.executeQuery("SELECT * FROM request where CURRENT_TEAM='" + Uteam + "' and status=1");
+            r = db.st.executeQuery("SELECT r.PLAYER_ID,p.PLAYERTEAM,r.OFFER_FROM,r.OFFER_AMOUNT FROM request r,player  p where  p.PLAYERTEAM='" + Uteam + "' and r.player_id=p.PLAYERID  and r.status=1");
         
             while( r.next()){
                 id=r.getInt(1)  ;
@@ -569,8 +577,8 @@ Decline1.addActionListener( new ActionListener()
                     String dsteam = Uteam;
                     int amt = 500;
                     System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
-                    sql = "INSERT INTO request( PLAYERID,CURRENT_TEAM,OFFER_FROM,OFFERED_AMOUNT,STATUS)"
-                            + " VALUES(" + player_id + ",'" + srcteam + "','" + dsteam + "'," + amt + ",1)";
+                    sql = "INSERT INTO request( PLAYER_ID,OFFER_FROM,OFFER_AMOUNT,STATUS)"
+                            + " VALUES(" + player_id + ",'" + dsteam + "'," + amt + ",1)";
                     db.st.execute(sql);
                     System.out.println("  " + player_id + "  " + srcteam + "  " + dsteam + "  " + amt + "");
                 } catch (Exception e) {
