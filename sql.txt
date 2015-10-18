@@ -1,0 +1,34 @@
+create table login(
+username varchar(20) primary key,
+password varchar(20),
+isadmin number(1) default 0);
+
+create table team(
+teamno number primary key,
+teamname varchar(20),
+currentbudget number,
+totalplayers number);
+
+create table player(
+playerid number primary key,
+playername varchar(20),
+playerteam varchar(20),
+playerrating number(11,5),
+age number,
+transfer varchar(25),
+buy varchar(3));
+
+create table request(
+player_id number,
+curent_team varchar(20),
+offer_from varchar(20),
+offere_amountnumber(10,2),
+status number
+primary key(player_id,offer_from));
+
+create table sponsor(
+sponsorid number primary key,
+sponsorname varchar(20),
+sponsorteam varchar(20),
+amount number(8,5));	
+

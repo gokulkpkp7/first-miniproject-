@@ -349,10 +349,14 @@ refreshjt2();
 
     }
 
-    private void addinboxitems(String msg,int Avalue) {
+            float frombudget;
+            float tobudget;
+            float offeredamt;
+    private void addinboxitems(String msg,int Avalue,String from1) {
         JLabel Inbox1 = new JLabel();
         final JKButton Accept1 = new JKButton();
         final JKButton Decline1 = new JKButton();
+        final String from=from1; 
         Accept1.JKintValue=Avalue;
         Decline1.JKintValue=Avalue;
         Inbox1.setText(msg);
@@ -371,8 +375,26 @@ Accept1.addActionListener( new ActionListener()
     {
 //        System.out.println("Do Something, Accept1 Clicked"+Accept1.JKintValue);
         try{
-             db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" "); 
+            offeredamt=500.0f;
+            ResultSet r=db.st.executeQuery("select CURRENTBUDGET from team where TEAMNAME='"+from+"'");
+            r.next();
+            frombudget=Float.parseFloat(r.getString(1));
+            r.close();
+            ResultSet r1=db.st.executeQuery("select CURRENTBUDGET from team where TEAMNAME='"+Uteam+"'");
+            r1.next();
+            tobudget=Float.parseFloat(r1.getString(1));
+            r1.close();
+            
+            if(frombudget>offeredamt)   {
+                
+                 db.st.execute("update team set CURRENTBUDGET="+(frombudget-offeredamt)+" where  TEAMNAME='"+from+"' ");
+                 db.st.execute("update team set CURRENTBUDGET="+(tobudget+offeredamt)+" where  TEAMNAME='"+Uteam+"' "); 
+                 db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" "); 
       
+            }
+                 else {
+                     JOptionPane.showMessageDialog(jp3,"Bidding Team has insufficient Balance ");
+                         }
        jp3.removeAll();
        inboxitem();
        jp3.revalidate();
@@ -382,11 +404,22 @@ Accept1.addActionListener( new ActionListener()
         } 
            
     }
-});Decline1.addActionListener( new ActionListener()
+});
+Decline1.addActionListener( new ActionListener()
 {
     public void actionPerformed(ActionEvent e)
     {
         System.out.println("Do Something Decline1 Clicked"+Decline1.JKintValue);
+        try { 
+            db.st.execute("update request set status=0 where PLAYERID="+Accept1.JKintValue+" and OFFER_FROM='"+from+"'");
+        } catch (SQLException ex) {
+            System.out.println("update req failed");
+        }
+      
+       jp3.removeAll();
+       inboxitem();
+       jp3.revalidate();
+       jp3.repaint();
     }
 });
     }
@@ -428,16 +461,15 @@ Accept1.addActionListener( new ActionListener()
             float amt;
   try {
               ResultSet r;
-            r = db.st.executeQuery("SELECT * FROM request where CURRENT_TEAM='" + Uteam + "'");
+            r = db.st.executeQuery("SELECT * FROM request where CURRENT_TEAM='" + Uteam + "' and status=1");
         
-             
             while( r.next()){
                 id=r.getInt(1)  ;
                 from=r.getString(3)  ;
                 to=r.getString(2)  ;
                 amt=r.getFloat(4)  ;
                 System.out.println(id+" "+ from +" "+ to +" "+ amt);
-                addinboxitems(from+" bids player '"+to+"'( "+id+" ) for  "+amt,id);
+                addinboxitems(from+" bids player '"+to+"'( "+id+" ) for  "+amt,id,from);
             }
                 r.close();
                 inboxcurrheight=10;
