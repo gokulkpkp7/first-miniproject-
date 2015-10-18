@@ -15,12 +15,11 @@ playername varchar(20),
 playerteam varchar(20),
 playerrating number(11,5),
 age number,
-transfer varchar(25),
-buy varchar(3));
+transfer varchar(25) default 'Transfer',
+buy varchar(3) default 'Buy');
 
 create table request(
-player_id number,
-curent_team varchar(20),
+player_id number, 
 offer_from varchar(20),
 offere_amountnumber(10,2),
 status number
@@ -35,4 +34,4 @@ amount number(8,5));
 --------------------------------------------------------------------------
 
 
-insert into login values('Admin','Admin',1);
+insert into login values('admin','admin',1);
