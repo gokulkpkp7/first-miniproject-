@@ -314,6 +314,12 @@ try{
             db.st.executeUpdate("INSERT INTO login(USERNAME,PASSWORD,ISADMIN) " + 
                 "VALUES ('"+N+"','"+N+"',0)");
              
+//            System.out.println("INSERT INTO team(TEAMNO,TEAMNAME,CURRENTBUDGET,TOTALPLAYERS) " + 
+//                "VALUES ('"+count+"','"+N+"', '"+B+"',0)");
+//            System.out.println("INSERT INTO login(USERNAME,PASSWORD,ISADMIN) " + 
+//                "VALUES ('"+N+"','"+N+"',0)");
+            
+            
             JOptionPane.showMessageDialog(this,"Team Added ");
             if(Repeatall.isSelected()) { 
               AddTeam A=new AddTeam(); 
