@@ -32,3 +32,7 @@ sponsorname varchar(20),
 sponsorteam varchar(20),
 amount number(8,5));	
 
+--------------------------------------------------------------------------
+
+
+insert into login values('Admin','Admin',1);
