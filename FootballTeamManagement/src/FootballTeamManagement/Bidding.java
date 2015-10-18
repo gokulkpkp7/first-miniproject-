@@ -123,13 +123,13 @@ String Uteam;
         try {
                     ResultSet r = db.st.executeQuery(sql);
                     r.next();
-                     player_id = r.getInt(1); 
+                     player_id = r.getInt(1);
+                     r.close();
           } catch (Exception e) {
 System.out.println(e);
                 } 
         
-                    String dsteam = "a"; 
-                    player_id=5;
+                    String dsteam =Uteam; 
                     float amt=Float.parseFloat(Bidamt.getText());
                     String sql1=" ";
                     int status=1;
@@ -143,10 +143,14 @@ System.out.println(e);
                     sql1="update request set STATUS=1 ,OFFER_AMOUNT="+amt+" where  "
                             + "PLAYER_ID="+player_id+" and OFFER_FROM='"+dsteam+"' ";
                                 db.st.execute(sql1);
-JOptionPane.showMessageDialog(this, "Bidding Successful");
+JOptionPane.showMessageDialog(this, "Bidding Successful [1] ");
                     this.dispose();
 
                 }
+                else{
+                    System.out.println("tausdkb");
+                   this.dispose();
+                 }
             }else{
                 
 

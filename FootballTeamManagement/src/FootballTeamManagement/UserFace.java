@@ -378,7 +378,10 @@ Accept1.addActionListener( new ActionListener()
     {
 //        System.out.println("Do Something, Accept1 Clicked"+Accept1.JKintValue);
         try{
-            offeredamt=500.0f;
+            ResultSet r2=db.st.executeQuery("select OFFER_AMOUNT from request where PLAYER_ID="+Accept1.JKintValue+" and OFFER_FROM='"+from+"' ");
+            r2.next(); 
+            offeredamt=r2.getFloat(1);
+            r2.close();
             ResultSet r=db.st.executeQuery("select CURRENTBUDGET,TOTALPLAYERS from team where TEAMNAME='"+from+"'");
             r.next(); 
             frombudget=Float.parseFloat(r.getString(1));
@@ -396,7 +399,7 @@ Accept1.addActionListener( new ActionListener()
                 
                  db.st.executeUpdate("update team set CURRENTBUDGET="+(frombudget-offeredamt)+",TOTALPLAYERS="+fromtp+"   where  TEAMNAME='"+from+"' ");
                  db.st.executeUpdate("update team set CURRENTBUDGET="+(tobudget+offeredamt)+"  ,TOTALPLAYERS="+totp+"  where  TEAMNAME='"+Uteam+"' "); 
-                 db.st.executeUpdate("update player set PLAYERTEAM='"+from+"' where PLAYERID="+Accept1.JKintValue+" "); 
+                 db.st.executeUpdate("update player set PLAYERTEAM='"+from+"',TRANSFER='Transfer' where PLAYERID="+Accept1.JKintValue+" "); 
                                  db.st.execute("delete from request where PLAYER_ID="+Accept1.JKintValue+" "); 
       
             }
@@ -568,8 +571,8 @@ Decline1.addActionListener( new ActionListener()
 
             } else if (isPushed && (label.toLowerCase().equals("buy"))) {
     current_row_value = getprimarykeyvalue(rowno, jT2);
-                String sql = "SELECT * FROM player WHERE playerid=" + current_row_value + "  ";
-              
+                String sql = "SELECT playerid FROM player WHERE playerid=" + current_row_value + "  ";
+              System.out.println("c"+current_row_value);
            Bidding Bi =new Bidding(sql,Uteam);
            Bi.setVisible(true);
 
