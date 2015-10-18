@@ -371,7 +371,7 @@ Accept1.addActionListener( new ActionListener()
     {
 //        System.out.println("Do Something, Accept1 Clicked"+Accept1.JKintValue);
         try{
-             db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" ");
+             db.st.execute("delete from request where PLAYERID="+Accept1.JKintValue+" "); 
       
        jp3.removeAll();
        inboxitem();
